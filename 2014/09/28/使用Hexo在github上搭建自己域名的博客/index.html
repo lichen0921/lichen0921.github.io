@@ -75,7 +75,7 @@
     </p>
   <p class="article-time">
     <time datetime="2014-09-28T15:59:05.000Z" itemprop="datePublished">Sep 28 2014</time>
-    Updated:<time datetime="2014-09-28T16:28:15.000Z" itemprop="dateModified">Sep 29 2014</time>
+    Updated:<time datetime="2014-09-28T16:57:57.000Z" itemprop="dateModified">Sep 29 2014</time>
     
   </p>
 </header>
@@ -84,7 +84,7 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
-		<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#github"><span class="toc-number">1.</span> <span class="toc-text">github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Hexo"><span class="toc-number">2.</span> <span class="toc-text">Hexo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装Hexo"><span class="toc-number">2.1.</span> <span class="toc-text">安装Hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#初始化Hexo"><span class="toc-number">2.2.</span> <span class="toc-text">初始化Hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#生成和预览"><span class="toc-number">2.3.</span> <span class="toc-text">生成和预览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#发布到github"><span class="toc-number">2.4.</span> <span class="toc-text">发布到github</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bug处理"><span class="toc-number">2.5.</span> <span class="toc-text">bug处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更换pacman主题"><span class="toc-number">2.6.</span> <span class="toc-text">更换pacman主题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#域名解析"><span class="toc-number">3.</span> <span class="toc-text">域名解析</span></a></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#github"><span class="toc-number">1.</span> <span class="toc-text">github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Hexo"><span class="toc-number">2.</span> <span class="toc-text">Hexo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装Hexo"><span class="toc-number">2.1.</span> <span class="toc-text">安装Hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#初始化Hexo"><span class="toc-number">2.2.</span> <span class="toc-text">初始化Hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#生成和预览"><span class="toc-number">2.3.</span> <span class="toc-text">生成和预览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#发布到github"><span class="toc-number">2.4.</span> <span class="toc-text">发布到github</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bug处理"><span class="toc-number">2.5.</span> <span class="toc-text">bug处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更换pacman主题"><span class="toc-number">2.6.</span> <span class="toc-text">更换pacman主题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Create_a_new_post"><span class="toc-number">2.7.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Run_server"><span class="toc-number">2.8.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Generate_static_files"><span class="toc-number">2.9.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deploy_to_remote_sites"><span class="toc-number">2.10.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#域名解析"><span class="toc-number">3.</span> <span class="toc-text">域名解析</span></a></li></ol>
 		</div>
 		
 		<p>注册了域名，使用Hexo在github上搭建自己的网站<br><a id="more"></a></p>
@@ -143,7 +143,23 @@ rm -rf .deploy
 hexo g
 hexo s
 hexo d
-</code></pre><hr>
+</code></pre><h2 id="Create_a_new_post">Create a new post</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
+
+<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+<h2 id="Run_server">Run server</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
+
+<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<h2 id="Generate_static_files">Generate static files</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
+
+<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
+<h2 id="Deploy_to_remote_sites">Deploy to remote sites</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
+
+<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+<hr>
 <h1 id="域名解析">域名解析</h1>
 <pre><code>记录类型  主机记录      记录值
    A        @     <span class="number">103.245</span><span class="number">.222</span><span class="number">.133</span>
@@ -192,7 +208,7 @@ hexo d
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
-  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#github"><span class="toc-number">1.</span> <span class="toc-text">github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Hexo"><span class="toc-number">2.</span> <span class="toc-text">Hexo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装Hexo"><span class="toc-number">2.1.</span> <span class="toc-text">安装Hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#初始化Hexo"><span class="toc-number">2.2.</span> <span class="toc-text">初始化Hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#生成和预览"><span class="toc-number">2.3.</span> <span class="toc-text">生成和预览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#发布到github"><span class="toc-number">2.4.</span> <span class="toc-text">发布到github</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bug处理"><span class="toc-number">2.5.</span> <span class="toc-text">bug处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更换pacman主题"><span class="toc-number">2.6.</span> <span class="toc-text">更换pacman主题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#域名解析"><span class="toc-number">3.</span> <span class="toc-text">域名解析</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#github"><span class="toc-number">1.</span> <span class="toc-text">github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Hexo"><span class="toc-number">2.</span> <span class="toc-text">Hexo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装Hexo"><span class="toc-number">2.1.</span> <span class="toc-text">安装Hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#初始化Hexo"><span class="toc-number">2.2.</span> <span class="toc-text">初始化Hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#生成和预览"><span class="toc-number">2.3.</span> <span class="toc-text">生成和预览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#发布到github"><span class="toc-number">2.4.</span> <span class="toc-text">发布到github</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bug处理"><span class="toc-number">2.5.</span> <span class="toc-text">bug处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更换pacman主题"><span class="toc-number">2.6.</span> <span class="toc-text">更换pacman主题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Create_a_new_post"><span class="toc-number">2.7.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Run_server"><span class="toc-number">2.8.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Generate_static_files"><span class="toc-number">2.9.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deploy_to_remote_sites"><span class="toc-number">2.10.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#域名解析"><span class="toc-number">3.</span> <span class="toc-text">域名解析</span></a></li></ol>
   </div>
 
 <div id="asidepart">
