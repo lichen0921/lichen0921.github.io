@@ -4,12 +4,12 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>synchronized块 | Launchercher</title>
+    <title>使用Hexo在github上搭建自己域名的博客 | Launchercher</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="wIsper">
     
-    <meta name="description" content="同步块里面对象锁的细节">
+    <meta name="description" content="注册了域名，使用Hexo在github上搭建自己的网站">
     
     
     
@@ -67,15 +67,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2014/09/28/synchronized块/" title="synchronized块" itemprop="url">synchronized块</a>
+      <a href="/2014/09/28/使用Hexo在github上搭建自己域名的博客/" title="使用Hexo在github上搭建自己域名的博客" itemprop="url">使用Hexo在github上搭建自己域名的博客</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://launchercher.com" title="wIsper">wIsper</a>
     </p>
   <p class="article-time">
-    <time datetime="2014-09-27T16:00:00.000Z" itemprop="datePublished">Sep 28 2014</time>
-    Updated:<time datetime="2014-09-27T18:15:37.000Z" itemprop="dateModified">Sep 28 2014</time>
+    <time datetime="2014-09-28T15:59:05.000Z" itemprop="datePublished">Sep 28 2014</time>
+    Updated:<time datetime="2014-09-28T16:28:15.000Z" itemprop="dateModified">Sep 29 2014</time>
     
   </p>
 </header>
@@ -84,80 +84,77 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
-		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#例子"><span class="toc-number">1.</span> <span class="toc-text">例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行结果"><span class="toc-number">2.</span> <span class="toc-text">运行结果</span></a></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#github"><span class="toc-number">1.</span> <span class="toc-text">github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Hexo"><span class="toc-number">2.</span> <span class="toc-text">Hexo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装Hexo"><span class="toc-number">2.1.</span> <span class="toc-text">安装Hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#初始化Hexo"><span class="toc-number">2.2.</span> <span class="toc-text">初始化Hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#生成和预览"><span class="toc-number">2.3.</span> <span class="toc-text">生成和预览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#发布到github"><span class="toc-number">2.4.</span> <span class="toc-text">发布到github</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bug处理"><span class="toc-number">2.5.</span> <span class="toc-text">bug处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更换pacman主题"><span class="toc-number">2.6.</span> <span class="toc-text">更换pacman主题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#域名解析"><span class="toc-number">3.</span> <span class="toc-text">域名解析</span></a></li></ol>
 		</div>
 		
-		<p>同步块里面对象锁的细节<br><a id="more"></a></p>
+		<p>注册了域名，使用Hexo在github上搭建自己的网站<br><a id="more"></a></p>
+<h1 id="github">github</h1>
 <blockquote>
-<p>synchronized块相对于方法声明加synchronized关键字，更加灵活</p>
+<p>new repository 命名为 lichen0921.github.io</p>
 </blockquote>
-<h3 id="例子">例子</h3>
-<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FetchRunnable</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>{
-
-    <span class="keyword">private</span> String TAG_1 = <span class="keyword">new</span> String(<span class="string">"TAG_1"</span>);<span class="comment">//锁this</span>
-    <span class="keyword">private</span> <span class="keyword">static</span> String TAG_2 = <span class="keyword">new</span> String(<span class="string">"TAG_2"</span>);<span class="comment">//锁class</span>
-    <span class="keyword">private</span> String TAG_3 = <span class="string">"TAG_3"</span>;<span class="comment">//锁class</span>
-
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>() {
-        <span class="comment">//runClass();</span>
-        <span class="comment">//runThis();</span>
-        runTag(TAG_1);
-        sleep();
-        runTag(TAG_2);
-        sleep();
-        runTag(TAG_3);
-    }
-
-    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title">runClass</span>() {
-        <span class="keyword">synchronized</span> (FetchRunnable.class) {
-            System.out.println(<span class="string">"run Class"</span>);
-            sleep();
-        }
-    }
-
-    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title">runThis</span>() {
-        <span class="keyword">synchronized</span> (<span class="keyword">this</span>) {
-            System.out.println(<span class="string">"run this"</span>);
-            sleep();
-        }
-    }
-
-    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title">runTag</span>(String tag) {
-        <span class="keyword">synchronized</span> (tag) {
-            System.out.println(Thread.currentThread().getName() + <span class="string">" run "</span> + tag +<span class="string">" 秒="</span>+Calendar.getInstance().get(Calendar.SECOND));
-            sleep();
-        }
-    }
-
-    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title">sleep</span>() {
-        <span class="keyword">try</span> {
-            Thread.sleep(<span class="number">1000</span>);
-        } <span class="keyword">catch</span> (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {
-        Thread t0 = <span class="keyword">new</span> Thread(<span class="keyword">new</span> FetchRunnable());
-        Thread t1 = <span class="keyword">new</span> Thread(<span class="keyword">new</span> FetchRunnable());
-        t0.start();
-        t1.start();
-    }
-}
-</code></pre><h3 id="运行结果">运行结果</h3>
-<pre><code><span class="constant">Thread-0 run TAG_1 秒</span>=<span class="number">18</span>
-<span class="constant">Thread-1 run TAG_1 秒</span>=<span class="number">18</span>
-<span class="constant">Thread-1 run TAG_2 秒</span>=<span class="number">20</span>
-<span class="constant">Thread-0 run TAG_2 秒</span>=<span class="number">21</span>
-<span class="constant">Thread-1 run TAG_3 秒</span>=<span class="number">22</span>
-<span class="constant">Thread-0 run TAG_3 秒</span>=<span class="number">23</span>
+<p>以 <a href="http://lichen0921.github.io" target="_blank" rel="external">http://lichen0921.github.io</a> 可以访问这个代码仓库.</p>
+<p>新建一个 <strong>CNAME</strong> 文件，内容为</p>
+<pre><code>www.launchercher.<span class="keyword">com</span>
+</code></pre><hr>
+<h1 id="Hexo">Hexo</h1>
+<blockquote>
+<p>环境需要 Git 和 Node.js</p>
+</blockquote>
+<h2 id="安装Hexo">安装Hexo</h2>
+<pre><code>npm <span class="operator"><span class="keyword">install</span> -g hexo</span>
+</code></pre><p>NPM全称是Node Package Manager，是NodeJs的包管理器</p>
+<h2 id="初始化Hexo">初始化Hexo</h2>
+<pre><code><span class="built_in">mkdir</span> launchercher
+<span class="keyword">cd</span> launchercher
+hexo init
+</code></pre><h2 id="生成和预览">生成和预览</h2>
+<pre><code>hexo generate
+hexo <span class="keyword">server</span>
+</code></pre><p>或者简称</p>
+<pre><code><span class="title">hexo</span> g
+hexo s
+</code></pre><p>用浏览器打开<a href="http://localhost:4000" target="_blank" rel="external">http://localhost:4000</a> 预览博客</p>
+<h2 id="发布到github">发布到github</h2>
+<p>修改_config.yml</p>
+<pre><code>deploy:
+  <span class="class"><span class="keyword">type</span>: <span class="title">github</span></span>
+  repository: https:<span class="comment">//github.com/lichen0921/lichen0921.github.io.git</span>
+</code></pre><p>发布</p>
+<pre><code><span class="title">hexo</span> deploy
+</code></pre><p>简称</p>
+<pre><code><span class="title">hexo</span> d
+</code></pre><h2 id="bug处理">bug处理</h2>
+<pre><code>npm <span class="operator"><span class="keyword">install</span> hexo-renderer-ejs <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-renderer-stylus <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-renderer-marked <span class="comment">--save</span></span>
+</code></pre><h2 id="更换pacman主题">更换pacman主题</h2>
+<pre><code>git clone http<span class="variable">s:</span>//github.<span class="keyword">com</span>/A-limon/pacman.git themes/pacman
+</code></pre><p>然后将_config.yml中的theme修改为:pacman</p>
+<blockquote>
+<p>同时修改E:\launchercher\hexo\node_modules\hexo-renderer-stylus\index.js</p>
+</blockquote>
+<pre><code>stylus
+    <span class="keyword">...</span>
+    .set(<span class="string">'compress'</span>, true)
+</code></pre><p>如果发现没效果，可以</p>
+<pre><code>rm -rf <span class="keyword">public</span>
+hexo clean
+rm -rf .deploy
+hexo g
+hexo s
+hexo d
+</code></pre><hr>
+<h1 id="域名解析">域名解析</h1>
+<pre><code>记录类型  主机记录      记录值
+   A        @     <span class="number">103.245</span><span class="number">.222</span><span class="number">.133</span>
+ CNAME     www    lichen0921.github.<span class="built_in">io</span>
 </code></pre>  
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/Android/">Android</a>
+  <span></span> <a href="/tags/Common/">Common</a>
   </div>
 
 
@@ -165,7 +162,7 @@
 
 <div class="article-share" id="share">
 
-  <div data-url="http://launchercher.com/2014/09/28/synchronized块/" data-title="synchronized块 | Launchercher" data-tsina="606788262" class="share clearfix">
+  <div data-url="http://launchercher.com/2014/09/28/使用Hexo在github上搭建自己域名的博客/" data-title="使用Hexo在github上搭建自己域名的博客 | Launchercher" data-tsina="606788262" class="share clearfix">
   </div>
 
 </div>
@@ -174,19 +171,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2014/09/28/使用Hexo在github上搭建自己域名的博客/" title="使用Hexo在github上搭建自己域名的博客">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  使用Hexo在github上搭建自己域名的博客</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2014/09/27/hello-world/"  title="Hello World">
+<a href="/2014/09/28/synchronized块/"  title="synchronized块">
  <strong>NEXT:</strong><br/> 
- <span>Hello World
+ <span>synchronized块
 </span>
 </a>
 </div>
@@ -203,7 +192,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
-  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#例子"><span class="toc-number">1.</span> <span class="toc-text">例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行结果"><span class="toc-number">2.</span> <span class="toc-text">运行结果</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#github"><span class="toc-number">1.</span> <span class="toc-text">github</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Hexo"><span class="toc-number">2.</span> <span class="toc-text">Hexo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装Hexo"><span class="toc-number">2.1.</span> <span class="toc-text">安装Hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#初始化Hexo"><span class="toc-number">2.2.</span> <span class="toc-text">初始化Hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#生成和预览"><span class="toc-number">2.3.</span> <span class="toc-text">生成和预览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#发布到github"><span class="toc-number">2.4.</span> <span class="toc-text">发布到github</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bug处理"><span class="toc-number">2.5.</span> <span class="toc-text">bug处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更换pacman主题"><span class="toc-number">2.6.</span> <span class="toc-text">更换pacman主题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#域名解析"><span class="toc-number">3.</span> <span class="toc-text">域名解析</span></a></li></ol>
   </div>
 
 <div id="asidepart">
