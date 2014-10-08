@@ -4,12 +4,32 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>synchronized块 | Launchercher</title>
+    <title>Markdown语法 | Launchercher</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="wIsper">
     
-    <meta name="description" content="同步块里面对象锁的细节">
+    <meta name="description" content="Markdown语法
+代码:Markdown语法
+
+# 一级标题 #
+## 二级标题 (带下划线) ##
+### 三级标题 ###
+
+
+**加粗** *斜体*
+
+- 分类
+- 无序
+
+`带背景`
+
+1. 分类1
+2. 分类2
+
+[链接](http://launchercher.com)
+
+&amp;gt; ">
     
     
     
@@ -67,15 +87,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2014/09/28/synchronized块/" title="synchronized块" itemprop="url">synchronized块</a>
+      <a href="/2014/10/08/Markdown语法/" title="Markdown语法" itemprop="url">Markdown语法</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://launchercher.com" title="wIsper">wIsper</a>
     </p>
   <p class="article-time">
-    <time datetime="2014-09-27T16:00:00.000Z" itemprop="datePublished">Sep 28 2014</time>
-    Updated:<time datetime="2014-09-27T18:15:37.000Z" itemprop="dateModified">Sep 28 2014</time>
+    <time datetime="2014-10-08T14:47:13.000Z" itemprop="datePublished">Oct 8 2014</time>
+    Updated:<time datetime="2014-10-08T14:53:20.000Z" itemprop="dateModified">Oct 8 2014</time>
     
   </p>
 </header>
@@ -84,80 +104,55 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
-		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#例子"><span class="toc-number">1.</span> <span class="toc-text">例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行结果"><span class="toc-number">2.</span> <span class="toc-text">运行结果</span></a></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Markdown语法"><span class="toc-number">1.</span> <span class="toc-text">Markdown语法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#一级标题"><span class="toc-number"></span> <span class="toc-text">一级标题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#二级标题_(带下划线)"><span class="toc-number"></span> <span class="toc-text">二级标题 (带下划线)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#三级标题"><span class="toc-number">1.</span> <span class="toc-text">三级标题</span></a></li></ol>
 		</div>
 		
-		<p>同步块里面对象锁的细节<br><a id="more"></a></p>
+		<h3 id="Markdown语法">Markdown语法</h3>
+<pre><code>代码<span class="symbol">:Markdown</span>语法
+</code></pre><hr>
+<pre><code><span class="header"># 一级标题 #</span>
+<span class="header">## 二级标题 (带下划线) ##</span>
+<span class="header">### 三级标题 ###</span>
+
+
+<span class="strong">**加粗**</span> <span class="emphasis">*斜体*</span>
+
+<span class="bullet">- </span>分类
+<span class="bullet">- </span>无序
+
+<span class="code">`带背景`</span>
+
+<span class="bullet">1. </span>分类1
+<span class="bullet">2. </span>分类2
+
+[<span class="link_label">链接</span>](<span class="link_url">http://launchercher.com</span>)
+
+<span class="blockquote">&gt; 引用</span>
+</code></pre><hr>
+<h1 id="一级标题">一级标题</h1>
+<h2 id="二级标题_(带下划线)">二级标题 (带下划线)</h2>
+<h3 id="三级标题">三级标题</h3>
+<p><strong>加粗</strong> <em>斜体</em></p>
+<ul>
+<li>分类</li>
+<li>无序</li>
+</ul>
+<p><code>带背景</code></p>
+<ol>
+<li>分类1</li>
+<li>分类2</li>
+</ol>
+<p><a href="http://launchercher.com" target="_blank" rel="external">链接</a></p>
 <blockquote>
-<p>synchronized块相对于方法声明加synchronized关键字，更加灵活</p>
+<p>引用</p>
 </blockquote>
-<h3 id="例子">例子</h3>
-<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FetchRunnable</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>{
-
-    <span class="keyword">private</span> String TAG_1 = <span class="keyword">new</span> String(<span class="string">"TAG_1"</span>);<span class="comment">//锁this</span>
-    <span class="keyword">private</span> <span class="keyword">static</span> String TAG_2 = <span class="keyword">new</span> String(<span class="string">"TAG_2"</span>);<span class="comment">//锁class</span>
-    <span class="keyword">private</span> String TAG_3 = <span class="string">"TAG_3"</span>;<span class="comment">//锁class</span>
-
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>() {
-        <span class="comment">//runClass();</span>
-        <span class="comment">//runThis();</span>
-        runTag(TAG_1);
-        sleep();
-        runTag(TAG_2);
-        sleep();
-        runTag(TAG_3);
-    }
-
-    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title">runClass</span>() {
-        <span class="keyword">synchronized</span> (FetchRunnable.class) {
-            System.out.println(<span class="string">"run Class"</span>);
-            sleep();
-        }
-    }
-
-    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title">runThis</span>() {
-        <span class="keyword">synchronized</span> (<span class="keyword">this</span>) {
-            System.out.println(<span class="string">"run this"</span>);
-            sleep();
-        }
-    }
-
-    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title">runTag</span>(String tag) {
-        <span class="keyword">synchronized</span> (tag) {
-            System.out.println(Thread.currentThread().getName() + <span class="string">" run "</span> + tag +<span class="string">" 秒="</span>+Calendar.getInstance().get(Calendar.SECOND));
-            sleep();
-        }
-    }
-
-    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title">sleep</span>() {
-        <span class="keyword">try</span> {
-            Thread.sleep(<span class="number">1000</span>);
-        } <span class="keyword">catch</span> (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {
-        Thread t0 = <span class="keyword">new</span> Thread(<span class="keyword">new</span> FetchRunnable());
-        Thread t1 = <span class="keyword">new</span> Thread(<span class="keyword">new</span> FetchRunnable());
-        t0.start();
-        t1.start();
-    }
-}
-</code></pre><h3 id="运行结果">运行结果</h3>
-<pre><code><span class="constant">Thread-0 run TAG_1 秒</span>=<span class="number">18</span>
-<span class="constant">Thread-1 run TAG_1 秒</span>=<span class="number">18</span>
-<span class="constant">Thread-1 run TAG_2 秒</span>=<span class="number">20</span>
-<span class="constant">Thread-0 run TAG_2 秒</span>=<span class="number">21</span>
-<span class="constant">Thread-1 run TAG_3 秒</span>=<span class="number">22</span>
-<span class="constant">Thread-0 run TAG_3 秒</span>=<span class="number">23</span>
-</code></pre>  
+  
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/Android/">Android</a>
+  <span></span> <a href="/tags/Common/">Common</a>
   </div>
 
 
@@ -165,7 +160,7 @@
 
 <div class="article-share" id="share">
 
-  <div data-url="http://launchercher.com/2014/09/28/synchronized块/" data-title="synchronized块 | Launchercher" data-tsina="606788262" class="share clearfix">
+  <div data-url="http://launchercher.com/2014/10/08/Markdown语法/" data-title="Markdown语法 | Launchercher" data-tsina="606788262" class="share clearfix">
   </div>
 
 </div>
@@ -174,19 +169,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2014/09/28/使用Hexo在github上搭建自己域名的博客/" title="使用Hexo在github上搭建自己域名的博客">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  使用Hexo在github上搭建自己域名的博客</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2014/09/27/hello-world/"  title="Hello World">
+<a href="/2014/09/29/解决一个因BitMap引起的OOM问题/"  title="解决一个因BitMap引起的OOM问题">
  <strong>NEXT:</strong><br/> 
- <span>Hello World
+ <span>解决一个因BitMap引起的OOM问题
 </span>
 </a>
 </div>
@@ -203,7 +190,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
-  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#例子"><span class="toc-number">1.</span> <span class="toc-text">例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行结果"><span class="toc-number">2.</span> <span class="toc-text">运行结果</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Markdown语法"><span class="toc-number">1.</span> <span class="toc-text">Markdown语法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#一级标题"><span class="toc-number"></span> <span class="toc-text">一级标题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#二级标题_(带下划线)"><span class="toc-number"></span> <span class="toc-text">二级标题 (带下划线)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#三级标题"><span class="toc-number">1.</span> <span class="toc-text">三级标题</span></a></li></ol>
   </div>
 
 <div id="asidepart">
