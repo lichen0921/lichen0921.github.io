@@ -4,12 +4,12 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Hello World | Launchercher</title>
+    <title>PopupWindow定时关闭,点击外部或返回键关闭 | Launchercher</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="wIsper">
     
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in ">
+    <meta name="description" content="PopupWindow定时关闭，点击外部或返回键关闭且取消定时任务">
     
     
     
@@ -67,15 +67,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2014/09/27/hello-world/" title="Hello World" itemprop="url">Hello World</a>
+      <a href="/2014/10/29/PopupWindow定时关闭-点击外部或返回键关闭/" title="PopupWindow定时关闭,点击外部或返回键关闭" itemprop="url">PopupWindow定时关闭,点击外部或返回键关闭</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://launchercher.com" title="wIsper">wIsper</a>
     </p>
   <p class="article-time">
-    <time datetime="2014-09-26T17:46:01.000Z" itemprop="datePublished">Sep 27 2014</time>
-    Updated:<time datetime="2014-09-27T15:52:15.000Z" itemprop="dateModified">Sep 27 2014</time>
+    <time datetime="2014-10-29T15:29:59.000Z" itemprop="datePublished">Oct 29 2014</time>
+    Updated:<time datetime="2014-10-29T15:48:13.000Z" itemprop="dateModified">Oct 29 2014</time>
     
   </p>
 </header>
@@ -84,37 +84,112 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick_Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create_a_new_post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run_server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate_static_files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy_to_remote_sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+		
 		</div>
 		
-		<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">trobuleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2>
-<h3 id="Create_a_new_post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
+		<p><code>PopupWindow</code><strong>定时关闭</strong>，点击外部或返回键关闭且<strong>取消定时任务</strong><br><a id="more"></a></p>
+<blockquote>
+<ul>
+<li>使用的是<code>Handler</code>的<code>postDelayed</code>方式实现定时任务——关闭<em>PopupWindow</em></li>
+<li>如果在定时任务执行之前，用户点击<em>PopupWindow</em>的<code>外部</code>或者<code>back</code>键关闭了弹出窗口，<br>使用<code>handler.removeCallbacks(r)</code>，<strong>从handler的消息队列中remove之前的runnable对象的回调</strong></li>
+</ul>
+</blockquote>
+<pre><code><span class="keyword">package</span> com.lichen.niceslim.util;
 
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
+<span class="keyword">import</span> android.content.Context;
+<span class="keyword">import</span> android.graphics.drawable.BitmapDrawable;
+<span class="keyword">import</span> android.graphics.drawable.ColorDrawable;
+<span class="keyword">import</span> android.os.Handler;
+<span class="keyword">import</span> android.view.Gravity;
+<span class="keyword">import</span> android.view.LayoutInflater;
+<span class="keyword">import</span> android.view.View;
+<span class="keyword">import</span> android.view.WindowManager.LayoutParams;
+<span class="keyword">import</span> android.widget.PopupWindow;
+<span class="keyword">import</span> android.widget.TextView;
 
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
+<span class="keyword">import</span> com.lichen.niceslim.R;
 
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QingQingPopup</span> </span>{
 
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-  
+    <span class="javadoc">/**
+     * 普通显示PopupWindow
+     *<span class="javadoctag"> @param</span> context 上下文对象
+     *<span class="javadoctag"> @param</span> message 需要显示的信息
+     */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">show</span>(Context context, String message) {
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_toast, <span class="keyword">null</span>);
+        <span class="keyword">final</span> PopupWindow pop = <span class="keyword">new</span> PopupWindow(view, 
+                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, <span class="keyword">false</span>);<span class="comment">// 创建PopupWindow对象  </span>
+        TextView btn = (TextView) view.findViewById(R.id.toast_text); 
+        pop.setBackgroundDrawable(<span class="keyword">new</span> BitmapDrawable());<span class="comment">//点击外边可消失 </span>
+        pop.setOutsideTouchable(<span class="keyword">true</span>);<span class="comment">//设置点击窗口外边窗口消失</span>
+        pop.setFocusable(<span class="keyword">true</span>);<span class="comment">//设置此参数获得焦点，否则无法点击</span>
+        btn.setText(message);
+        btn.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() {
+            <span class="annotation">@Override</span> 
+            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span>(View v) {
+                <span class="keyword">if</span>(pop.isShowing()) {
+                    pop.dismiss();<span class="comment">//隐藏窗口，如果设置了点击窗口外小时即不需要此方式隐藏</span>
+                } <span class="keyword">else</span> {
+                    pop.showAsDropDown(v);<span class="comment">//显示窗口</span>
+                } 
+            } 
+        }); 
+        pop.showAtLocation(view, Gravity.CENTER, <span class="number">0</span>, <span class="number">0</span>);
+    }
+
+    <span class="javadoc">/**
+     * 定时关闭的PopupWindow
+     *<span class="javadoctag"> @param</span> context 上下文对象
+     *<span class="javadoctag"> @param</span> message 需要显示的信息
+     */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">showPopupWindowAutoDismiss</span>(Context context, String message) {
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_toast, <span class="keyword">null</span>);
+        <span class="keyword">final</span> PopupWindow pop = <span class="keyword">new</span> PopupWindow(view, 
+                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, <span class="keyword">false</span>); 
+        TextView btn = (TextView) view.findViewById(R.id.toast_text);
+        btn.setText(message);
+        pop.setBackgroundDrawable(<span class="keyword">new</span> ColorDrawable(android.R.color.transparent));<span class="comment">//点击外边可消失 </span>
+        pop.setOutsideTouchable(<span class="keyword">true</span>);<span class="comment">//设置点击窗口外边窗口消失</span>
+        pop.setFocusable(<span class="keyword">true</span>);<span class="comment">//设置此参数获得焦点，否则无法点击 </span>
+
+        <span class="keyword">final</span> Runnable r = <span class="keyword">new</span> Runnable() {
+            <span class="annotation">@Override</span>
+            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>() {
+                <span class="keyword">if</span>(pop.isShowing()) {
+                    pop.dismiss();
+                }
+            }
+        };
+        <span class="keyword">final</span> Handler handler = <span class="keyword">new</span> Handler();<span class="comment">//使用Handler做定时关闭PopupWindow</span>
+        pop.setOnDismissListener(<span class="keyword">new</span> PopupWindow.OnDismissListener() {
+            <span class="annotation">@Override</span>
+            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDismiss</span>() {
+                <span class="javadoc">/**如果定时任务到达前执行了关闭窗口，则取消定时任务。
+                此处是从handler的消息队列中remove之前的runnable对象的回调*/</span>
+                handler.removeCallbacks(r);
+            }
+        });
+        pop.showAtLocation(view, Gravity.BOTTOM, <span class="number">0</span>, <span class="number">0</span>);
+        handler.postDelayed(r, <span class="number">2000</span>);<span class="comment">//2秒后自动关闭</span>
+    }
+
+}
+</code></pre>  
 	</div>
 		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Android/">Android</a>
+  </div>
 
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://launchercher.com/2014/09/27/hello-world/" data-title="Hello World | Launchercher" data-tsina="606788262" class="share clearfix">
+  <div data-url="http://launchercher.com/2014/10/29/PopupWindow定时关闭-点击外部或返回键关闭/" data-title="PopupWindow定时关闭,点击外部或返回键关闭 | Launchercher" data-tsina="606788262" class="share clearfix">
   </div>
 
 </div>
@@ -123,19 +198,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2014/09/28/synchronized块/" title="synchronized块">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  synchronized块</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2014/09/27/Android自定义Listener/"  title="Android自定义Listener">
+<a href="/2014/10/28/模仿AsyncTask实现串行执行的队列/"  title="模仿AsyncTask实现串行执行的队列">
  <strong>NEXT:</strong><br/> 
- <span>Android自定义Listener
+ <span>模仿AsyncTask实现串行执行的队列
 </span>
 </a>
 </div>
@@ -152,7 +219,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick_Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create_a_new_post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run_server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate_static_files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy_to_remote_sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+  
   </div>
 
 <div id="asidepart">
